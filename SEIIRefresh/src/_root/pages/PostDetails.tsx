@@ -2,18 +2,37 @@ import Loader from "@/components/shared/Loader";
 import PostStats from "@/components/shared/PostStats";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
-import { useGetPostById } from "@/lib/react-query/queriesAndMutations"
+import { useDeletePost, useGetPostById } from "@/lib/react-query/queriesAndMutations"
 import {multiFormatDateString } from "@/lib/utils";
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 
 const PostDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams()
   const { data: post, isPending } = useGetPostById(id || '');
   const { user } = useUserContext();
-  const handleDeletePost = () => {}
+  const { mutate: deletePost } = useDeletePost();
+  const handleDeletePost = () => {
+    deletePost({ postId: id, imageId: post?.imageId });
+    navigate(-1);
+  }
 
   return (
     <div className="post_details-container">
+      <div className="hidden md:flex max-w-5xl w-full">
+        <Button
+          onClick={() => navigate(-1)}
+          variant="ghost"
+          className="shad-button_ghost">
+          <img
+            src={"/assets/icons/back.svg"}
+            alt="back"
+            width={24}
+            height={24}
+          />
+          <p className="small-medium lg:base-medium">Back</p>
+        </Button>
+      </div>
       {isPending ? <Loader /> : (
         <div className="post_details-card">
           <img 

@@ -161,6 +161,8 @@ const UpdateProfile = () => {
                 onClick={() => navigate(-1)}>
                 Cancel
               </Button>
+              </div>
+              <div>
               <Button
                 type="submit"
                 className="shad-button_dark_4 whitespace-nowrap"

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -9,7 +9,7 @@ import { Textarea } from "../ui/textarea"
 import FileUploader from "../shared/FileUploader"
 import { PostValidation } from "@/lib/validation"
 import { Models } from "appwrite"
-import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations"
+import { useCreatePost, useDeletePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations"
 import { useUserContext } from "@/context/AuthContext"
 import { useToast } from "../ui/use-toast"
 import Loader from "../shared/Loader"
@@ -27,6 +27,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
     const { user } = useUserContext();
     const { toast } = useToast();
     const navigate = useNavigate();
+    const { id } = useParams();
 
     // 1. Define your form.
   const form = useForm<z.infer<typeof PostValidation>>({
@@ -69,6 +70,13 @@ const PostForm = ({ post, action }: PostFormProps) => {
     }
     navigate("/");
   }
+
+  const { mutate: deletePost } = useDeletePost();
+  const handleDeletePost = () => {
+    deletePost({ postId: id, imageId: post?.imageId });
+    navigate(-1);
+  }
+  const location = useLocation();
 
   return (
     <Form {...form}>
@@ -132,12 +140,14 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
         <div className="flex gap-4 items-center justify-end">
-            <Button type="button" className="shad-button_dark_4" onClick={() => navigate(-1)}>Cancel</Button>
-            <Button type="submit" className="shad-button_dark_4 whitespace-nowrap"
+          <Button type="button" className={`shad-button_dark_4`} onClick={() => navigate(-1)}>Cancel</Button>
+          {location.pathname !== '/create-post' && (
+          <Button type="button" className={`shad-button_dark_4`} onClick={handleDeletePost}>Delete Post</Button> )}
+          <Button type="submit" className="shad-button_dark_4 whitespace-nowrap"
             disabled={isLoadingCreate || isLoadingUpdate}>
               {(isLoadingCreate || isLoadingUpdate) && <Loader />}
               {action} Post
-            </Button>
+          </Button>
         </div>
       </form>
     </Form>

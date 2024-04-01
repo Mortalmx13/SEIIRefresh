@@ -276,7 +276,7 @@ export async function updatePost(post: IUpdatePost) {
     }
 }
 
-export async function deletePost(postId: string, imageId: string){
+export async function deletePost(postId?: string, imageId?: string){
     if(!postId || !imageId) throw Error;
 
     try {
@@ -316,7 +316,10 @@ export async function searchPosts(searchTerm: string) {
         const posts = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.postCollectionId,
-            [Query.search('caption', searchTerm)]
+            [
+                Query.search('caption', searchTerm),
+                Query.search('tags', searchTerm)
+            ]
         )
         if(!posts) throw Error;
         return posts;
@@ -324,6 +327,8 @@ export async function searchPosts(searchTerm: string) {
         console.log(error);
     }
 }
+
+
 
 export async function getUserById(userId: string){
     try {
@@ -402,6 +407,37 @@ export async function getUsers(limit?: number){
         return users;
         
     } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function followUsers(currentUser: any, followedUserId: string){
+    try{
+        const followedUser = await getUserById(followedUserId);
+
+        if (!followedUser) throw Error;
+
+        const updatedFollowedUser = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            followedUserId,
+            {
+                followers: followedUser.followers + 1
+            }
+        );
+
+        const updatedCurrentUser = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            currentUser.$id,
+            {
+                following: [...currentUser.following, followedUserId]
+            }
+        );
+
+        return { followedUser: updatedFollowedUser, currentUser: updatedCurrentUser};
+
+        } catch (error){
         console.log(error);
     }
 }

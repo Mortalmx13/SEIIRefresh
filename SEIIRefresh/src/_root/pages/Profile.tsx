@@ -53,15 +53,15 @@ const Profile = () => {
             </div>
             <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={currentUser.posts.length} label="Posts" />
-              <StatBlock value={20} label="Followers" />
-              <StatBlock value={20} label="Following" />
+              <StatBlock value={0} label="Followers" />
+              <StatBlock value={0} label="Following" />
             </div>
             <p className="small-medium md:base-medium text-center xl:text-left mt-7 max-w-screen-sm">{currentUser.bio}</p>
           </div>
           <div className="flex justify-center gap-4">
             <div className={`${user.id !== currentUser.$id && "hidden"}`}>
               <Link to={`/update-profile/${currentUser.$id}`}
-              className={`h-12 bg-primary-500 px-5 text-light-1 flex-center gap-2 rounded-lg 
+              className={`h-12 bg-light-3/50 px-5 text-light-2 flex-center gap-2 rounded-lg 
               ${user.id !== currentUser.$id && "hidden"}`}>
                 <img
                 src={"/assets/icons/edit.svg"}
@@ -86,7 +86,7 @@ const Profile = () => {
           <Link
             to={`/profile/${id}`}
             className={`profile-tab rounded-l-lg ${
-              pathname === `/profile/${id}` && "!bg-primary-500"
+              pathname === `/profile/${id}` && "!bg-light-3/50"
             }`}>
             <img 
             src={"/assets/icons/posts.svg"}
@@ -99,7 +99,7 @@ const Profile = () => {
           <Link
             to={`/profile/${id}/liked-posts`}
             className={`profile-tab rounded-r-lg ${
-              pathname === `/profile/${id}/liked-posts` && "!bg-primary-500"
+              pathname === `/profile/${id}/liked-posts` && "!bg-light-3/50"
             }`}>
             <img 
             src={"/assets/icons/like.svg"}
@@ -109,10 +109,6 @@ const Profile = () => {
           />
           Liked Posts
           </Link>
-
-
-
-          
         </div>
       )}
 

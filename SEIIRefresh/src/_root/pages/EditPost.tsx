@@ -22,7 +22,6 @@ const EditPost = () => {
         </div>
         {isPending ? <Loader /> : <PostForm action="Update" post={post} />}
       </div>
-      
     </div>
   )
 }

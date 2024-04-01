@@ -17,4 +17,7 @@ export enum QUERY_KEYS {
   
     //  SEARCH KEYS
     SEARCH_POSTS = "getSearchPosts",
+
+    // FOLLOW KEYS
+    FOLLOW_USERS = "followUsers"
   }
