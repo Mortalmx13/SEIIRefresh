@@ -1,4 +1,3 @@
-
 import GridPostList from "@/components/shared/GridPostList";
 import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
@@ -73,8 +72,8 @@ const Profile = () => {
               </Link>
             </div>
             <div className={`${user.id === id && "hidden"}`}>
-              <Button type="button" className="shad-button_primary px-8">
-                Follow
+              <Button type="button" size="sm" className="shad-button_primary px-5">
+                {'Follow'}
               </Button>
             </div>
           </div>
@@ -126,3 +125,4 @@ const Profile = () => {
 }
 
 export default Profile
+

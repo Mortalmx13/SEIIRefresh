@@ -19,7 +19,6 @@ const Home = () => {
                   <PostCard post={post} key={post.caption}/>
                 </li>
               ))}
-              
             </ul>
           )}
         </div>

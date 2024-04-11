@@ -411,33 +411,23 @@ export async function getUsers(limit?: number){
     }
 }
 
-export async function followUsers(currentUser: any, followedUserId: string){
-    try{
-        const followedUser = await getUserById(followedUserId);
+export async function followUser(followId: string, followsArray: string[]) { 
+    try { 
+        const updatedFollow= await databases.updateDocument( 
+            appwriteConfig.databaseId, 
+            appwriteConfig.followsCollectionId, 
+            followId, 
+            {  
+                follows: followsArray
+            } 
+        ) 
+        if(!updatedFollow) throw Error; 
+        return updatedFollow; 
+    } catch (error) { 
+        console.log(error); 
+    } 
+} 
 
-        if (!followedUser) throw Error;
 
-        const updatedFollowedUser = await databases.updateDocument(
-            appwriteConfig.databaseId,
-            appwriteConfig.userCollectionId,
-            followedUserId,
-            {
-                followers: followedUser.followers + 1
-            }
-        );
 
-        const updatedCurrentUser = await databases.updateDocument(
-            appwriteConfig.databaseId,
-            appwriteConfig.userCollectionId,
-            currentUser.$id,
-            {
-                following: [...currentUser.following, followedUserId]
-            }
-        );
 
-        return { followedUser: updatedFollowedUser, currentUser: updatedCurrentUser};
-
-        } catch (error){
-        console.log(error);
-    }
-}
