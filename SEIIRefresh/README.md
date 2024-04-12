@@ -48,3 +48,17 @@ This command will build the project and start the development server. You can ac
 ## Termination
 
 To stop the development server, press `Ctrl + C` in the terminal.
+
+## Group Member Contributions
+
+Adam:
+
+Shayan:
+
+Charles:
+
+Carolynn:
+
+Jackson:
+
+Samese:
