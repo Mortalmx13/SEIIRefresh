@@ -5,6 +5,7 @@ import { useUserContext } from "@/context/AuthContext";
 import { useDeletePost, useGetPostById } from "@/lib/react-query/queriesAndMutations"
 import {multiFormatDateString } from "@/lib/utils";
 import { useParams, Link, useNavigate } from "react-router-dom"
+import html2canvas from "html2canvas";
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -17,6 +18,25 @@ const PostDetails = () => {
     deletePost({ postId: id, imageId: post?.imageId });
     navigate(-1);
   }
+
+  const handlePrintScreenshot = () => {
+    html2canvas(document.body).then(canvas => {
+        const dataUrl = canvas.toDataURL();
+        const printWindow = window.open('', '_blank');
+
+        if (printWindow) {
+            printWindow.document.open();
+            printWindow.document.write(`<html><head><title>Print</title></head><body>`);
+            printWindow.document.write(`<img src="${dataUrl}" onload="window.print(); window.close();" style="width: 100%;"/>`);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+        } else {
+            // Handle the error, for example, by alerting the user
+            alert("Unable to open the print window. Please allow pop-ups for this site.");
+        }
+    });
+};
+
 
   return (
     <div className="post_details-container">
@@ -32,6 +52,12 @@ const PostDetails = () => {
             height={24}
           />
           <p className="small-medium lg:base-medium">Back</p>
+        </Button>
+        <Button
+          onClick={handlePrintScreenshot}
+          variant="ghost"
+          className="shad-button_ghost">
+          Print Screenshot
         </Button>
       </div>
       {isPending ? <Loader /> : (

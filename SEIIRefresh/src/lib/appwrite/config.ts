@@ -21,3 +21,13 @@ export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
 export const avatars = new Avatars(client);
+
+
+//for automated testing
+export interface INewUser {
+    email: string;
+    password: string;
+    name: string;
+    username: string;
+}
+

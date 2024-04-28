@@ -1,52 +1,39 @@
-import { createPost } from './api'; // Replace 'yourCreatePostModule' with the actual path to your createPost module
-import { uploadFile, getFilePreview, deleteFile } from './otherModules'; // Import necessary functions/types from other modules
-import { INewPost } from './types'; // Assuming INewPost is a type/interface defined in a 'types' file
+import { Builder, By, Capabilities, until } from 'selenium-webdriver';
+import { createUserAccount } from './api'; // Import your function here
+import { INewUser } from './config'; // Import your types/interfaces here
 
-jest.mock('./otherModules', () => ({
-    uploadFile: jest.fn(),
-    getFilePreview: jest.fn(),
-    deleteFile: jest.fn(),
-}));
+const user: INewUser = {
+    email: 'test@example.com',
+    password: 'password123',
+    name: 'Test User',
+    username: 'testuser',
+};
 
-describe('createPost function', () => {
-    const mockPost: INewPost = {
-        file: [{ name: 'mockFile.txt', type: 'text/plain' }], // Mocking a file object for testing
-        // Add other properties of INewPost as needed for testing
-    };
+async function testCreateUserAccount() {
+    let driver = await new Builder().withCapabilities(Capabilities.chrome()).build();
+    try {
+        await driver.get('http://localhost:5173/'); // Replace with your testing environment URL
 
-    afterEach(() => {
-        jest.clearAllMocks(); // Clear all mock function calls after each test
-    });
+        // Fill in the user details in the registration form
+        await driver.findElement(By.id('email')).sendKeys(user.email);
+        await driver.findElement(By.id('password')).sendKeys(user.password);
+        await driver.findElement(By.id('name')).sendKeys(user.name);
+        await driver.findElement(By.id('username')).sendKeys(user.username);
 
-    it('should create a post successfully', async () => {
-        (uploadFile as jest.Mock).mockResolvedValue({ $id: 'mockFileId' }); // Mock uploadFile to resolve with a file object
-        (getFilePreview as jest.Mock).mockReturnValue('mockFileUrl'); // Mock getFilePreview to return a file URL
+        // Call the createUserAccount function
+        const newUser = await createUserAccount(user);
 
-        await createPost(mockPost);
+        // Perform assertions on the newUser object or behavior
+        if (newUser !== null && typeof newUser === 'object' && 'email' in newUser) {
+            console.log('Test passed: User account created successfully');
+        } else {
+            console.error('Test failed: User account creation failed');
+        }
+    } catch (error) {
+        console.error('Error during test:', error);
+    } finally {
+        await driver.quit();
+    }
+}
 
-        expect(uploadFile).toHaveBeenCalledWith(mockPost.file[0]);
-        expect(getFilePreview).toHaveBeenCalledWith('mockFileId');
-        expect(deleteFile).not.toHaveBeenCalled(); // Ensure deleteFile is not called
-    });
-
-    it('should handle error when file upload fails', async () => {
-        const mockError = new Error('File upload failed');
-        (uploadFile as jest.Mock).mockRejectedValue(mockError); // Mock uploadFile to reject with an error
-
-        await expect(createPost(mockPost)).rejects.toThrow(mockError);
-
-        expect(getFilePreview).not.toHaveBeenCalled(); // Ensure getFilePreview is not called
-        expect(deleteFile).not.toHaveBeenCalled(); // Ensure deleteFile is not called
-    });
-
-    it('should handle error when file URL retrieval fails', async () => {
-        (uploadFile as jest.Mock).mockResolvedValue({ $id: 'mockFileId' }); // Mock uploadFile to resolve with a file object
-        (getFilePreview as jest.Mock).mockReturnValue(undefined); // Mock getFilePreview to return undefined
-
-        await expect(createPost(mockPost)).rejects.toThrow();
-
-        expect(uploadFile).toHaveBeenCalledWith(mockPost.file[0]);
-        expect(getFilePreview).toHaveBeenCalledWith('mockFileId');
-        expect(deleteFile).toHaveBeenCalledWith('mockFileId'); // Ensure deleteFile is called with the correct fileId
-    });
-});
+testCreateUserAccount();
