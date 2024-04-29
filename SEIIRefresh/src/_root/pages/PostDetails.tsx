@@ -5,7 +5,6 @@ import { useUserContext } from "@/context/AuthContext";
 import { useDeletePost, useGetPostById } from "@/lib/react-query/queriesAndMutations"
 import {multiFormatDateString } from "@/lib/utils";
 import { useParams, Link, useNavigate } from "react-router-dom"
-import html2canvas from "html2canvas";
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -19,24 +18,9 @@ const PostDetails = () => {
     navigate(-1);
   }
 
-  const handlePrintScreenshot = () => {
-    html2canvas(document.body).then(canvas => {
-        const dataUrl = canvas.toDataURL();
-        const printWindow = window.open('', '_blank');
-
-        if (printWindow) {
-            printWindow.document.open();
-            printWindow.document.write(`<html><head><title>Print</title></head><body>`);
-            printWindow.document.write(`<img src="${dataUrl}" onload="window.print(); window.close();" style="width: 100%;"/>`);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-        } else {
-            // Handle the error, for example, by alerting the user
-            alert("Unable to open the print window. Please allow pop-ups for this site.");
-        }
-    });
-};
-
+  const handlePrintPage = () => {
+    window.print()
+  }
 
   return (
     <div className="post_details-container">
@@ -53,12 +37,9 @@ const PostDetails = () => {
           />
           <p className="small-medium lg:base-medium">Back</p>
         </Button>
-        <Button
-          onClick={handlePrintScreenshot}
-          variant="ghost"
-          className="shad-button_ghost">
-          Print Screenshot
-        </Button>
+        <Button onClick={handlePrintPage} variant="ghost" className="shad-button_ghost">
+          Print Page 
+          </Button>
       </div>
       {isPending ? <Loader /> : (
         <div className="post_details-card">
@@ -118,9 +99,9 @@ const PostDetails = () => {
           </div>
           <hr className="border w-full border-light-2/80">
           </hr>
-          <div className="whitespace-pre-line flex flex-col flex-1 w-full small-medium lg:base-regular">
+          <div className="whitespace-pre-line flex flex-col flex-1 w-auto small-medium ">
             <p>{post?.caption}</p>
-              <ul className="flex gap-1 mt-2">
+              <ul className="flex flex-wrap gap-1 mt-2">
                 {post?.tags.map((tag: string) => (
                   <li key={tag} className="text-light-3">
                     #{tag}

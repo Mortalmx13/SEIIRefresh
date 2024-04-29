@@ -1,64 +1,30 @@
+# React + TypeScript + Vite
 
-# Getting Started
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Follow these steps to set up the project locally:
+Currently, two official plugins are available:
 
-## 1. Download the Project from GitLab
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-Clone or download the project from GitLab to your local machine.
+## Expanding the ESLint configuration
 
-## 2. Open in Visual Studio Code (VSCode)
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-Open the downloaded project folder in Visual Studio Code for development.
+- Configure the top-level `parserOptions` property like this:
 
-## 3. Install Node.js and Vite
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
+```
 
-Ensure you have Node.js and Vite installed on your system. If not, you can download and install them from their official websites:
-- Node.js: [Download Node.js](https://nodejs.org/)
-- Vite: Install Vite globally using npm: npm install -g create-vite
-
-
-
-## 4. Create a Local ".env.local" File
-
-Create a `.env.local` file in the root directory of the project and add the following environment variables:
-
-VITE_APPWRITE_URL='https://cloud.appwrite.io/v1'
-VITE_APPWRITE_PROJECT_ID='65c67cc691a1c4e4e7fc'
-VITE_APPWRITE_STORAGE_ID='65cec9db13d42f32edc3'
-VITE_APPWRITE_DATABASE_ID='65ceca34aa70ac48deb2'
-VITE_APPWRITE_SAVES_COLLECTION_ID='65cecae9ecbe8828cdfd'
-VITE_APPWRITE_POST_COLLECTION_ID='65ceca9691bed50b51ac'
-VITE_APPWRITE_USER_COLLECTION_ID='65cecac4c56db715ace1'
-VITE_APPWRITE_FOLLOWS_COLLECTION_ID='660dfed54bf641c5241e'
-
-
-Make sure to replace the values with your actual Appwrite configuration.
-
-## 5. Run the Project
-
-Open the terminal in VSCode and type the following command to start the development server:
-
-npm run dev
-
-
-
-This command will build the project and start the development server. You can access the project at the provided URL (usually `http://localhost:3000`).
-
-## Termination
-
-To stop the development server, press `Ctrl + C` in the terminal.
-
-## Group Member Contributions
-
-Adam:
-
-Shayan:
-
-Charles:
-
-Carolynn:
-
-Jackson:
-
-Samese:
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list

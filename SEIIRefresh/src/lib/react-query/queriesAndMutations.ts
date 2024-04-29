@@ -164,7 +164,7 @@ export const useSearchPosts = (searchTerm: string) => {
     return useQuery({
         queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
         queryFn: () => searchPosts(searchTerm),
-        enabled: !!searchTerm
+        enabled: !!searchTerm,
     })
 }
 
@@ -197,22 +197,3 @@ export const useGetUsers = (limit?: number) => {
         queryFn: () => getUsers(limit),
     })
 }
-
-export const useFollowUser = () => { 
-    const queryClient = useQueryClient(); 
-
-    return useMutation({ 
-        mutationFn: ({ followId, followsArray }: { followId: string; followsArray: string[] }) => followUser(followId, followsArray), 
-        onSuccess: (data) => { 
-            queryClient.invalidateQueries({ 
-                queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id] 
-            }) 
-            queryClient.invalidateQueries({ 
-                queryKey: [QUERY_KEYS.GET_USERS] 
-            }) 
-            queryClient.invalidateQueries({ 
-                queryKey: [QUERY_KEYS.GET_CURRENT_USER] 
-            }) 
-        } 
-    }) 
-} 

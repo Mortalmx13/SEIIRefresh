@@ -317,8 +317,7 @@ export async function searchPosts(searchTerm: string) {
             appwriteConfig.databaseId,
             appwriteConfig.postCollectionId,
             [
-                Query.search('caption', searchTerm),
-                Query.search('tags', searchTerm)
+                Query.search('caption' && 'location' && 'tags', searchTerm),
             ]
         )
         if(!posts) throw Error;
@@ -410,23 +409,6 @@ export async function getUsers(limit?: number){
         console.log(error);
     }
 }
-
-export async function followUser(followId: string, followsArray: string[]) { 
-    try { 
-        const updatedFollow= await databases.updateDocument( 
-            appwriteConfig.databaseId, 
-            appwriteConfig.followsCollectionId, 
-            followId, 
-            {  
-                follows: followsArray
-            } 
-        ) 
-        if(!updatedFollow) throw Error; 
-        return updatedFollow; 
-    } catch (error) { 
-        console.log(error); 
-    } 
-} 
 
 
 

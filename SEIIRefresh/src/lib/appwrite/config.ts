@@ -8,7 +8,7 @@ export const appwriteConfig = {
     userCollectionId: import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
     postCollectionId: import.meta.env.VITE_APPWRITE_POST_COLLECTION_ID,
     savesCollectionId: import.meta.env.VITE_APPWRITE_SAVES_COLLECTION_ID,
-    followsCollectionId: import.meta.env.VITE_APPWRITE_FOLLOWS_COLLECTION_ID,
+    shoppingCollectionId: import.meta.env.VITE_APPWRITE_SHOPPING_COLLECTION_ID,
     
 }
 
@@ -21,13 +21,3 @@ export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
 export const avatars = new Avatars(client);
-
-
-//for automated testing
-export interface INewUser {
-    email: string;
-    password: string;
-    name: string;
-    username: string;
-}
-

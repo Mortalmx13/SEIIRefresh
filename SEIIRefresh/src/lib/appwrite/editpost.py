@@ -7,35 +7,44 @@ import requests
 import time
 
 user = {
-    'email': 'Selenium@example.com',
-    'password': 'password123',
+    'email': 'youngch20@students.ecu.edu',
+    'password': 'bill1234',
     
 }
 
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
+try:
+    driver.get('http://localhost:5173/')
+    print("Navigated to the website.")
 
-driver.get('http://localhost:5173/')
+    driver.find_element(By.ID, ":r0:-form-item").send_keys(user['email'])
+    print("Email entered: ", user['email'])
+    time.sleep(3)
 
-driver.find_element(By.ID, ":r0:-form-item").send_keys(user['email'])
-time.sleep(3)
-driver.find_element(By.ID, ":r1:-form-item").send_keys(user['password'] + Keys.ENTER)
-time.sleep(3)
+    driver.find_element(By.ID, ":r1:-form-item").send_keys(user['password'] + Keys.ENTER)
+    print("Password entered and submitted.")
+    time.sleep(3)
 
 
-home = driver.find_element(By.PARTIAL_LINK_TEXT, "/")
-home.click()
-editPost = driver.find_element(By.PARTIAL_LINK_TEXT, "/update-post/662c2d49da50e1284988")
-editPost.click()
+    home_link = driver.find_element(By.CSS_SELECTOR, 'a[href="/"][aria-current="page"]')
+    home_link.click()
+    print("Clicked on the Home link.")
+    time.sleep(3)
+    
+    editPost = driver.find_element(By.CSS_SELECTOR, 'a[href="/update-post/662eebf7a74c94a613f4"]')
+    editPost.click()
+    time.sleep(10)
+    print("Clicked on the edit post button")
 
-WebDriverWait(driver, 5)
+    driver.find_element(By.NAME, "location").send_keys("Whipped Lemonade -TEST")
+    print("added Whipped Lemonade to the name")
+    time.sleep(10)
 
-driver.find_element(By.ID, ":r6:-form-item-description").send_keys("Whipped Lemonade - Test")
-time.sleep(2)
-
-updatePost = driver.find_element(By.TYPE, "submit")
-updatePost.click()
-
-time.sleep(10)
-
-driver.quit()
+    update_post_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Update Post') and contains(@class, 'bg-primary')]")
+    update_post_button.click()
+    print("Clicked on the update post button")
+    time.sleep(10)
+finally:
+    driver.quit()
+    print("browser closed")

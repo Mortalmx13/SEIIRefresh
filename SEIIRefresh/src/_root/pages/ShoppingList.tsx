@@ -54,7 +54,7 @@ const ShoppingList = () => {
         <div className="max-w-5xl flex-start gap-3 justify-start w-full">
           <input
             type="text"
-            placeholder="Enter an Item"
+            placeholder="  Enter an Item"
             className="shad-input"
             onChange={(e) => setValue(e.target.value)}
             value={value}
@@ -74,14 +74,14 @@ const ShoppingList = () => {
               </span>
               <div className="flex items-center gap-2">
                 <Button
-                  className={``} // Decrease padding around the button
+                  className={`shad-button_dark_4`} // Decrease padding around the button
                   onClick={() => increaseQuantity(item.id)}
                   style={{ marginLeft: '10px' }}
                 >
                   +
                 </Button>
                 <Button
-                  className={``}
+                  className={`shad-button_dark_4`}
                   onClick={() => decreaseQuantity(item.id)}
                   style={{ marginRight: '5px' }}
                 >
