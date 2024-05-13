@@ -42,7 +42,7 @@ npm run dev
 
 
 
-This command will build the project and start the development server. You can access the project at the provided URL (usually `http://localhost:3000`).
+This command will build the project and start the development server. You can access the project at the provided URL (usually `http://localhost:5173`).
 
 ## Termination
 
